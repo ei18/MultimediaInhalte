@@ -1,5 +1,5 @@
 package com.riwi.MultimediaInhalte.infraestructure.abstract_service.Crud;
 
-public class CreateService {
+public interface CreateService<Request, Response> {
     
 }
