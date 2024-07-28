@@ -1,5 +1,7 @@
 package com.riwi.MultimediaInhalte.infraestructure.service;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,8 @@ import com.riwi.MultimediaInhalte.domain.entities.Class;
 import com.riwi.MultimediaInhalte.domain.repositories.ClassRepository;
 import com.riwi.MultimediaInhalte.infraestructure.abstract_service.IClassService;
 import com.riwi.MultimediaInhalte.infraestructure.mappers.ClassMapper;
+import com.riwi.MultimediaInhalte.utils.exception.BadRequestException;
+import com.riwi.MultimediaInhalte.utils.message.ErrorMessages;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -30,8 +34,8 @@ public class ClassService implements IClassService{
     }
 
     @Override
-    public ClassResponse get(Long id) {
-        return null;
+    public Optional<ClassResponse> get(Long id) {
+        return classRepository.findById(id).map(classMapper::classToClassResponse);
     }
 
     @Override
@@ -43,4 +47,10 @@ public class ClassService implements IClassService{
         return this.classRepository.findAll(pagination).map(classMapper::classToClassResponse);
     }
     
+    @Override
+    public ClassResponse finById(Long id) {
+        return this.classRepository.findById(id)
+        .map(classMapper::classToClassResponse)
+        .orElseThrow(() -> new BadRequestException(ErrorMessages.IdNotFound("Class")));
+    }   
 }

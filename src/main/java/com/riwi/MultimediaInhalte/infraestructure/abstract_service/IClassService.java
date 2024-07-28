@@ -10,5 +10,7 @@ public interface IClassService extends
                  CreateService<ClassRequest, ClassResponse>,
                  ReadService<ClassResponse, Long>,
                  ReadAllService<ClassResponse>{
+
+        ClassResponse finById(Long id);            
     
 }
